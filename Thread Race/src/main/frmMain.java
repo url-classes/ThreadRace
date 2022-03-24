@@ -27,17 +27,96 @@ public class frmMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblRegionCritica = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblNumeroHilo1 = new javax.swing.JLabel();
+        lblNumeroHilo2 = new javax.swing.JLabel();
+        lblNumeroHilo3 = new javax.swing.JLabel();
+        lblStatus1 = new javax.swing.JLabel();
+        lblStatus2 = new javax.swing.JLabel();
+        lblStatus3 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblRegionCritica.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        lblRegionCritica.setText("[  ]");
+
+        jLabel1.setText("Hilo 1");
+
+        jLabel2.setText("Hilo 2");
+
+        jLabel3.setText("Hilo 3");
+
+        lblNumeroHilo1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblNumeroHilo1.setText("?");
+
+        lblNumeroHilo2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblNumeroHilo2.setText("?");
+
+        lblNumeroHilo3.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lblNumeroHilo3.setText("?");
+
+        lblStatus1.setText("Hilo creado");
+
+        lblStatus2.setText("Hilo creado");
+
+        lblStatus3.setText("Hilo creado");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblNumeroHilo1)
+                    .addComponent(jLabel1))
+                .addGap(123, 123, 123)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(lblNumeroHilo2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblNumeroHilo3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(46, 46, 46))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(160, 160, 160)
+                        .addComponent(lblRegionCritica))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(lblStatus1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblStatus2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                .addComponent(lblStatus3)
+                .addGap(33, 33, 33))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblRegionCritica)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumeroHilo1)
+                    .addComponent(lblNumeroHilo2)
+                    .addComponent(lblNumeroHilo3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStatus1)
+                    .addComponent(lblStatus2)
+                    .addComponent(lblStatus3))
+                .addGap(57, 57, 57))
         );
 
         pack();
@@ -79,5 +158,15 @@ public class frmMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel lblNumeroHilo1;
+    private javax.swing.JLabel lblNumeroHilo2;
+    private javax.swing.JLabel lblNumeroHilo3;
+    private javax.swing.JLabel lblRegionCritica;
+    private javax.swing.JLabel lblStatus1;
+    private javax.swing.JLabel lblStatus2;
+    private javax.swing.JLabel lblStatus3;
     // End of variables declaration//GEN-END:variables
 }
