@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author migu_
+ * @author Miguel
  */
 public class frmMain extends javax.swing.JFrame {
     
