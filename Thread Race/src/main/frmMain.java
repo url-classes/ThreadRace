@@ -24,8 +24,6 @@ public class frmMain extends javax.swing.JFrame {
     // Región Crítica
     int[] regionCritica = new int[3];
     int posicion = 0;
-    // Semáforo para exclusión mutua
-    private static Semaphore mutex = new Semaphore(1, true); // Controla el acceso a la región crítica
 
     /**
      * Creates new form frmMain
@@ -56,18 +54,12 @@ public class frmMain extends javax.swing.JFrame {
             this.numeroAGenerar = (int)(Math.random()* 9 + 1);
             this.miEtiqueta.setText(String.valueOf(numeroAGenerar));
             // Región crítica
-            try {
-                mutex.acquire();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(frmMain.class.getName()).log(Level.SEVERE, null, ex);
-            }
             regionCritica[posicion] = this.numeroAGenerar;
             String contenidoRC = "[" + String.valueOf(regionCritica[0]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[1]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[2]) + "]";
             lblRegionCritica.setText(contenidoRC);
             posicion++;
-            mutex.release(); // Libera región crítica
             // Operaciones post región crítica
             System.out.println("Proceso finalizado con status: 0");
         }
