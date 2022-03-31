@@ -17,13 +17,14 @@ import javax.swing.JLabel;
 public class frmMain extends javax.swing.JFrame {
     
     int contador = 1;
+    static final int N = 3;
+    int posicion = 0;
+    super_monitor monitor = new super_monitor();
     // Procesos
     Proceso hilo1;
     Proceso hilo2;
     Proceso hilo3;
     // Región Crítica
-    int[] regionCritica = new int[3];
-    int posicion = 0;
 
     /**
      * Creates new form frmMain
@@ -33,9 +34,7 @@ public class frmMain extends javax.swing.JFrame {
         this.hilo1 = new Proceso(lblNumeroHilo1);
         this.hilo2 = new Proceso(lblNumeroHilo2);
         this.hilo3 = new Proceso(lblNumeroHilo3);
-        regionCritica[0] = 0;
-        regionCritica[1] = 0;
-        regionCritica[2] = 0;
+        
     }
     
     public class Proceso extends Thread {
@@ -53,15 +52,44 @@ public class frmMain extends javax.swing.JFrame {
             // Operaciones pre región crítica
             this.numeroAGenerar = (int)(Math.random()* 9 + 1);
             this.miEtiqueta.setText(String.valueOf(numeroAGenerar));
-            // Región crítica
-            regionCritica[posicion] = this.numeroAGenerar;
+            monitor.insertar(numeroAGenerar);
+            System.out.println("Proceso finalizado con status: 0");
+        }
+    }
+    class super_monitor { 
+        private int regionCritica[] = new int[N];
+        private int inf = 0, sup = 0; // contadores e índices
+        // monitor como solución
+        public super_monitor() {
+            regionCritica[0]=0;
+            regionCritica[1]=0;
+            regionCritica[2]=0;
+        }
+        /**
+         * synchronized = Una vez un hilo ha empezado a ejecutar ese método, no
+         * se permitirá que ningún otro hilo empiece a ejecutar ningún otro
+         * método synchronized de ese objeto
+         */
+        public synchronized void insertar(int val) {
+            if (posicion == N) {
+                ir_a_estado_inactivo(); // si el búfer está lleno, pasa al estado inactivo
+            }
+            regionCritica[posicion] = val;
             String contenidoRC = "[" + String.valueOf(regionCritica[0]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[1]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[2]) + "]";
             lblRegionCritica.setText(contenidoRC);
             posicion++;
-            // Operaciones post región crítica
-            System.out.println("Proceso finalizado con status: 0");
+            System.out.println(val + " ingresado");
+            if (posicion == 1) {
+                notify(); // si el consumidor estaba inactivo, lo despierta [signal]
+            }
+        }
+        private void ir_a_estado_inactivo() {
+            try {
+                wait(); // Duerme al proceso en turno
+            } catch (InterruptedException exc) {
+            };
         }
     }
 
@@ -211,12 +239,6 @@ public class frmMain extends javax.swing.JFrame {
         hilo1.start();
         hilo2.start();
         hilo3.start();
-        /*if (contador == 1)
-            hilo1.start();
-        if (contador == 2)
-            hilo2.start();
-        if (contador == 3)
-            hilo3.start();*/
         contador++;
     }//GEN-LAST:event_btnIniciarActionPerformed
 
