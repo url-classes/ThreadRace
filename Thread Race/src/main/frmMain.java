@@ -15,7 +15,8 @@ import javax.swing.JLabel;
  * @author migu_
  */
 public class frmMain extends javax.swing.JFrame {
-    
+    static final int N = 3; // constante que proporciona el tamaño del búfer
+    static super_monitor monitor = new super_monitor(); // crea instancia de un nuevo monitor
     int contador = 1;
     // Procesos
     Proceso hilo1;
@@ -54,17 +55,59 @@ public class frmMain extends javax.swing.JFrame {
             this.numeroAGenerar = (int)(Math.random()* 9 + 1);
             this.miEtiqueta.setText(String.valueOf(numeroAGenerar));
             // Región crítica
-            regionCritica[posicion] = this.numeroAGenerar;
+            monitor.insertar(this.numeroAGenerar);
+            regionCritica[posicion] = monitor.eliminar();
+            posicion++;
             String contenidoRC = "[" + String.valueOf(regionCritica[0]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[1]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[2]) + "]";
             lblRegionCritica.setText(contenidoRC);
-            posicion++;
             // Operaciones post región crítica
             System.out.println("Proceso finalizado con status: 0");
         }
     }
-
+    
+    //////reutilizamos un poco de codigo
+    static class super_monitor{ // monitor como solución
+        private int bufer[] = new int[N];
+        private int cuenta=0, inf=0, sup=0; // contadores e índices
+        
+        /**
+         * synchronized = Una vez un hilo ha empezado a ejecutar ese método, 
+         * no se permitirá que ningún otro hilo empiece a ejecutar ningún otro 
+         * método synchronized de ese objeto
+         */
+        public synchronized void insertar(int val){
+            if (cuenta==N)
+                ir_a_estado_inactivo(); // si el búfer está lleno, pasa al estado inactivo
+            bufer[sup]=val; // inserta un elemento en el búfer
+            sup=(sup+1)%N; // ranura en la que se va a colocar el siguiente elemento
+            cuenta=cuenta+1; // ahora hay un elemento más en el búfer
+            System.out.println(val + " ingresado");
+            if (cuenta==1)
+                notify(); // si el consumidor estaba inactivo, lo despierta [signal]
+        }
+        
+        public synchronized int eliminar(){
+            int val;
+            if (cuenta==0)
+                ir_a_estado_inactivo(); // si el búfer está vacío, pasa al estado inactivo
+            val=bufer[inf]; // obtiene un elemento del búfer
+            inf = (inf + 1) %N; // ranura en la que se va a colocar el siguiente elemento
+            cuenta=cuenta-1; // un elemento menos en el búfer
+            if (cuenta==N-1)
+                notify(); // si el productor estaba inactivo, lo despierta [signal]
+            return val;
+        }
+        
+        private void ir_a_estado_inactivo(){
+            try{
+                wait(); // Duerme al proceso en turno
+            }
+            catch(InterruptedException exc){};
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
