@@ -24,42 +24,71 @@ public class frmMain extends javax.swing.JFrame {
     // Región Crítica
     int[] regionCritica = new int[3];
     int posicion = 0;
+    int otronumero=0;
 
     /**
      * Creates new form frmMain
      */
     public frmMain() {
         initComponents();
-        this.hilo1 = new Proceso(lblNumeroHilo1);
-        this.hilo2 = new Proceso(lblNumeroHilo2);
-        this.hilo3 = new Proceso(lblNumeroHilo3);
+        Monitor obj = new Monitor();
+//        this.hilo1 = new Proceso(lblNumeroHilo1);
+//        this.hilo2 = new Proceso(lblNumeroHilo2);
+//        this.hilo3 = new Proceso(lblNumeroHilo3);
+        this.hilo1 = new Proceso(lblNumeroHilo1,obj);
+        this.hilo2 = new Proceso(lblNumeroHilo2,obj);
+        this.hilo3 = new Proceso(lblNumeroHilo3,obj);
         regionCritica[0] = 0;
         regionCritica[1] = 0;
         regionCritica[2] = 0;
     }
     
-    public class Proceso extends Thread {
-        int numeroAGenerar;
-        JLabel miEtiqueta;
-        String status;
-
-        public Proceso(JLabel etiqueta) {
-            numeroAGenerar = 0;
-            this.miEtiqueta = etiqueta;
-        }
-        
-        @Override
-        public void run() {
-            // Operaciones pre región crítica
-            this.numeroAGenerar = (int)(Math.random()* 9 + 1);
-            this.miEtiqueta.setText(String.valueOf(numeroAGenerar));
-            // Región crítica
-            regionCritica[posicion] = this.numeroAGenerar;
+    class Monitor{
+        synchronized void showMsg(String msg){
+            otronumero = Integer.parseInt(msg);
+            regionCritica[posicion] = otronumero;
             String contenidoRC = "[" + String.valueOf(regionCritica[0]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[1]) + "]";
             contenidoRC += "[" + String.valueOf(regionCritica[2]) + "]";
             lblRegionCritica.setText(contenidoRC);
             posicion++;
+            try{
+                Thread.sleep(500);
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }
+
+    }
+    
+
+    public class Proceso extends Thread {
+        int numeroAGenerar;
+        int otronumero;
+        Monitor m;
+        JLabel miEtiqueta;
+        String status;
+
+        public Proceso(JLabel etiqueta, Monitor m) {
+            numeroAGenerar = 0;
+            this.miEtiqueta = etiqueta;
+            this.m=m;
+        }
+
+        @Override
+        public void run() {
+            // Operaciones pre región crítica
+            this.numeroAGenerar = (int)(Math.random()* 9 + 1);
+            otronumero=this.numeroAGenerar;
+            this.miEtiqueta.setText(String.valueOf(numeroAGenerar));
+            // Región crítica
+//            regionCritica[posicion] = this.numeroAGenerar;
+//            String contenidoRC = "[" + String.valueOf(regionCritica[0]) + "]";
+//            contenidoRC += "[" + String.valueOf(regionCritica[1]) + "]";
+//            contenidoRC += "[" + String.valueOf(regionCritica[2]) + "]";
+//            lblRegionCritica.setText(contenidoRC);
+//            posicion++;
+              m.showMsg(String.valueOf(numeroAGenerar));
             // Operaciones post región crítica
             System.out.println("Proceso finalizado con status: 0");
         }
@@ -208,6 +237,7 @@ public class frmMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
+
         hilo1.start();
         hilo2.start();
         hilo3.start();
